@@ -3,13 +3,18 @@
 import { addListItemAction } from "@/actions/addListItemAction";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export const AddItemForm = () => {
+    const router = useRouter();
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         const formData = new FormData(e.currentTarget);
-        console.log("Submitted");
+
         await addListItemAction(formData);
+
+        router.refresh();
     };
     return (
         <form
