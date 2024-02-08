@@ -1,4 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Delete } from "lucide-react";
+import { DeleteItemForm } from "./DeleteItemForm";
 
 export const TodoItem = ({ item }: any) => {
     return (
@@ -8,7 +11,7 @@ export const TodoItem = ({ item }: any) => {
                     <CardTitle>{item.title}</CardTitle>
                 </CardHeader>
                 <CardFooter>
-                    <p>Card Footer</p>
+                    <DeleteItemForm itemId={item.id} />
                 </CardFooter>
             </Card>
         </li>
