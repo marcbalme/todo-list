@@ -1,32 +1,44 @@
 "use client";
 
-import { addListItemAction } from "@/actions/addListItemAction";
+import { createItem } from "@/actions/create-item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
+import { useAction } from "@/hooks/use-action";
+import { Todo } from "@prisma/client";
+import { useRef } from "react";
+import { toast } from "sonner";
 
 export const AddItemForm = () => {
-    const router = useRouter();
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const formRef = useRef<HTMLFormElement>(null);
+    const { execute, isLoading } = useAction(createItem, {
+        onSuccess: (data: Todo) => {
+            toast.success(`item ${data.title} added!`);
+            formRef.current?.reset();
+        },
+        onError: (error) => {
+            toast.error(error);
+        },
+    });
 
-        const formData = new FormData(e.currentTarget);
-
-        await addListItemAction(formData);
-
-        router.refresh();
+    const onSubmit = (formData: FormData) => {
+        const title = formData.get("title") as string;
+        execute({
+            title,
+        });
     };
     return (
         <form
-            onSubmit={onSubmit}
+            ref={formRef}
+            action={onSubmit}
             className="flex items-center gap-4 w-full m-x-auto"
         >
             <Input name="title" type="text" placeholder="Add a new item" />
             <Button
+                disabled={isLoading}
                 type="submit"
                 className="bg-primary text-white rounded-md px-3 py-2"
             >
-                Add
+                {isLoading ? "Adding..." : "Add"}
             </Button>
         </form>
     );
