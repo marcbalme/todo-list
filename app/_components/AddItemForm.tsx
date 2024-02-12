@@ -1,16 +1,18 @@
 "use client";
 
 import { createItem } from "@/actions/create-item";
+import { FormInput } from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAction } from "@/hooks/use-action";
 import { Todo } from "@prisma/client";
-import { useRef } from "react";
+import { ElementRef, useRef } from "react";
 import { toast } from "sonner";
 
 export const AddItemForm = () => {
     const formRef = useRef<HTMLFormElement>(null);
-    const { execute, isLoading } = useAction(createItem, {
+    const inputRef = useRef<ElementRef<"input">>(null);
+    const { execute, isLoading, fieldErrors } = useAction(createItem, {
         onSuccess: (data: Todo) => {
             toast.success(`item ${data.title} added!`);
             formRef.current?.reset();
@@ -30,9 +32,15 @@ export const AddItemForm = () => {
         <form
             ref={formRef}
             action={onSubmit}
-            className="flex items-center gap-4 w-full m-x-auto"
+            className="flex items-start gap-4 w-full m-x-auto"
         >
-            <Input name="title" type="text" placeholder="Add a new item" />
+            <FormInput
+                id="title"
+                type="text"
+                placeholder="Add a new item"
+                ref={inputRef}
+                errors={fieldErrors}
+            />
             <Button
                 disabled={isLoading}
                 type="submit"
