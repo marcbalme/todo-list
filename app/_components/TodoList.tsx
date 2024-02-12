@@ -2,7 +2,11 @@ import prisma from "@/lib/prisma";
 import { TodoItem } from "./TodoItem";
 
 export const TodoList = async () => {
-    const todos: Array<any> = await prisma.todo.findMany();
+    const todos: Array<any> = await prisma.todo.findMany({
+        orderBy: {
+            createdAt: "desc",
+        },
+    });
 
     if (!todos) {
         return <div>No todo</div>;

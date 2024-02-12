@@ -21,7 +21,7 @@ export const CheckItemForm = ({ itemId, done }: any) => {
                 size="icon"
                 className="mr-4"
             >
-                {!done ? (
+                {done ? (
                     <Check height={20} color="#25782d" />
                 ) : (
                     <Ban height={20} color="#eb0000" />

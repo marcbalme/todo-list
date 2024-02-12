@@ -3,7 +3,6 @@
 import { createItem } from "@/actions/create-item";
 import { FormInput } from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useAction } from "@/hooks/use-action";
 import { Todo } from "@prisma/client";
 import { ElementRef, useRef } from "react";
