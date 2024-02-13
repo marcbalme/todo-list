@@ -1,20 +1,39 @@
 "use client";
 
-import { deleteListItemAction } from "@/actions/deleteListItemAction";
+import { deleteItem } from "@/actions/delete-item";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
 import { Delete } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-export const DeleteItemForm = async ({ itemId }: { itemId: string }) => {
-    const router = useRouter();
-    const onSubmit = async () => {
-        await deleteListItemAction(itemId);
+interface DeleteItemFormProps {
+    itemId: string;
+}
 
-        router.refresh();
+export const DeleteItemForm = ({ itemId }: DeleteItemFormProps) => {
+    const { execute, isLoading } = useAction(deleteItem, {
+        onSuccess: () => {
+            toast.success("Item deleted!");
+        },
+        onError: (error) => {
+            toast.error(error);
+        },
+    });
+
+    const onSubmit = () => {
+        execute({
+            id: itemId,
+        });
     };
+
     return (
-        <form onSubmit={onSubmit}>
-            <Button type="submit" variant="destructive" size="icon">
+        <form action={onSubmit}>
+            <Button
+                type="submit"
+                variant="destructive"
+                size="icon"
+                disabled={isLoading}
+            >
                 <Delete height={20} />
             </Button>
         </form>

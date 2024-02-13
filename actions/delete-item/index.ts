@@ -35,4 +35,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     };
 };
 
-export const createItem = safeAction(DeleteItem, handler);
+export const deleteItem = safeAction(DeleteItem, handler);
