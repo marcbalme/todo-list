@@ -1,8 +1,9 @@
 import prisma from "@/lib/prisma";
 import { TodoItem } from "./TodoItem";
 import { Todo } from "@prisma/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export const TodoList = async () => {
+const TodoList = async () => {
     const todos: Array<Todo> = await prisma.todo.findMany({
         orderBy: {
             createdAt: "desc",
@@ -21,3 +22,22 @@ export const TodoList = async () => {
         </ul>
     );
 };
+
+TodoList.Skeleton = function SkeletonTodoList(): JSX.Element {
+    return (
+        <div className="flex flex-col pt-8">
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+            <Skeleton className="h-14 w-full p-2 mb-4" />
+        </div>
+    );
+};
+
+TodoList.displayName = "TodoList";
+
+export { TodoList };
