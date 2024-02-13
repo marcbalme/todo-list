@@ -1,25 +1,41 @@
 "use client";
 
-import { checkItemAction } from "@/actions/checkItemAction";
+import { checkItem } from "@/actions/check-item";
 import { Button } from "@/components/ui/button";
+import { useAction } from "@/hooks/use-action";
 import { Ban, Check } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-export const CheckItemForm = ({ itemId, done }: any) => {
-    const router = useRouter();
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        await checkItemAction(itemId, done);
-        router.refresh();
+interface CheckItemFormProps {
+    itemId: string;
+    done: boolean;
+}
+
+export const CheckItemForm = ({ itemId, done }: CheckItemFormProps) => {
+    const { execute, isLoading } = useAction(checkItem, {
+        onSuccess: () => {
+            toast.success("Status updated!");
+        },
+        onError: (error) => {
+            toast.error(error);
+        },
+    });
+
+    const onSubmit = () => {
+        execute({
+            id: itemId,
+            done,
+        });
     };
 
     return (
-        <form onSubmit={onSubmit}>
+        <form action={onSubmit}>
             <Button
                 type="submit"
                 variant="outline"
                 size="icon"
                 className="mr-4"
+                disabled={isLoading}
             >
                 {done ? (
                     <Check height={20} color="#25782d" />
