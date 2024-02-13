@@ -1,8 +1,9 @@
 import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { DeleteItemForm } from "./DeleteItemForm";
 import { CheckItemForm } from "./CheckItemForm";
+import { Todo } from "@prisma/client";
 
-export const TodoItem = ({ item }: any) => {
+export const TodoItem = ({ item }: Todo) => {
     return (
         <li>
             <Card>
